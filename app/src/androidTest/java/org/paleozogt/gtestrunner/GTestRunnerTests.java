@@ -1,6 +1,7 @@
 package org.paleozogt.gtestrunner;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import android.util.Log;
 
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -23,7 +24,7 @@ public class GTestRunnerTests {
 
     @Parameterized.Parameters(name = "{0}")
     public static List<String> getTestList() {
-        GTestRunner gtestRunner= new GTestRunner(InstrumentationRegistry.getTargetContext());
+        GTestRunner gtestRunner= new GTestRunner(InstrumentationRegistry.getInstrumentation().getTargetContext());
         return gtestRunner.getTests();
     }
 
@@ -32,13 +33,14 @@ public class GTestRunnerTests {
 
     public GTestRunnerTests(String testName) {
         this.testName= testName;
-        gtestRunner= new GTestRunner(InstrumentationRegistry.getTargetContext());
+        gtestRunner= new GTestRunner(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
     @Test
     public void testGTest() {
         MutableObject<String> output= new MutableObject<>();
-        boolean failed= gtestRunner.run("--gtest_filter=" + testName, output);
+        //boolean failed= gtestRunner.run("--gtest_filter=" + testName, output);
+        boolean failed= gtestRunner.runOne(testName, output);
         Log.d(TAG, output.toString());
         assertFalse(failed);
     }

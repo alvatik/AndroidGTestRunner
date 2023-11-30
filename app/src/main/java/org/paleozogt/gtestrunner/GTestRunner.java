@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class GTestRunner {
     public GTestRunner(Context ctx) {
         System.loadLibrary(getClass().getSimpleName());
-        cptr= create(ctx.getCacheDir().toString());
+        cptr= create(ctx.getCacheDir().getAbsolutePath());
         tests= loadTestsNames();
     }
 
@@ -26,11 +26,20 @@ public class GTestRunner {
         return run(cptr, arg, output);
     }
 
+    public boolean getListOfTests(MutableObject<String> output) {
+        return getListOfTests(cptr, output);
+    }
+
+    public boolean runOne(String testName, MutableObject<String> output) {
+        return runOne(cptr, testName, output);
+    }
+
     protected List<String> loadTestsNames() {
         List<String> tests= new ArrayList<>();
 
         MutableObject<String> output= new MutableObject<>();
-        run("--gtest_list_tests", output);
+//        run("--gtest_list_tests", output);
+        getListOfTests(output);
         Scanner scanner= new Scanner(output.getValue());
         String parent= "";
         while (scanner.hasNextLine()) {
@@ -57,5 +66,8 @@ public class GTestRunner {
     protected native static long create(String tempDir);
     protected native void destroy(long cptr);
     protected native boolean run(long cptr, String arg, MutableObject<String> output);
+
+    protected native boolean getListOfTests(long cptr, MutableObject<String> output);
+    protected native boolean runOne(long cptr, String testName, MutableObject<String> output);
 
 }

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+project(GTestRunner)
+
 add_subdirectory(src/main/cpp/gtest)
 
 add_library(GTestRunner SHARED src/main/cpp/GTestRunnerJNI.cpp src/main/cpp/tests.cpp)

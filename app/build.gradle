@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 34
     defaultConfig {
         applicationId "org.paleozogt.gtestrunner"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion 19
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndkVersion '25.1.8937393'
         externalNativeBuild {
             cmake {
                 cppFlags "-frtti -fexceptions"
@@ -23,18 +24,23 @@ android {
     }
     externalNativeBuild {
         cmake {
+            version "3.22.1"
             path "CMakeLists.txt"
         }
     }
+    namespace 'org.paleozogt.gtestrunner'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'org.apache.commons:commons-lang3:3.7'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:core:1.6.0-alpha03'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
 }
